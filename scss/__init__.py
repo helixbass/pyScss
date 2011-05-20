@@ -2754,13 +2754,13 @@ def __position(opposite, *p):
     elif 'right' in pos:
         hrz = 'left' if opposite else 'right'
     else:
-        hrz = 'center'
+        hrz = None
     if 'top' in pos:
         vrt = 'bottom' if opposite else 'top'
     elif 'bottom' in pos:
         vrt = 'top' if opposite else 'bottom'
     else:
-        vrt = 'center'
+        vrt = None
     if hrz == vrt:
         vrt = None
     return ListValue(list(v for v in (hrz, vrt) if v is not None))
