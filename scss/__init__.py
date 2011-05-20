@@ -2130,7 +2130,7 @@ def _linear_gradient(*args):
     color_stops = __color_stops(False, *color_stops)
 
     args = [
-        _position(position_and_angle) if position_and_angle is not None else None,
+        _position_or_angle(position_and_angle) if position_and_angle is not None else None,
     ]
     args.extend('%s %s' % (c, to_str(s)) for s,c in color_stops)
     to__s = 'linear-gradient(' + ', '.join(to_str(a) for a in args or [] if a is not None) + ')'
@@ -2153,14 +2153,7 @@ def _linear_gradient(*args):
     ret.to__css2 = to__css2
 
     def to__webkit():
-        args = [
-            'linear',
-            _position(position_and_angle or 'center top'),
-            _opposite_position(position_and_angle or 'center top'),
-        ]
-        args.extend('color-stop(%s, %s)' % (to_str(s), c) for s,c in color_stops)
-        ret = '-webkit-gradient(' + ', '.join(to_str(a) for a in args or [] if a is not None) + ')'
-        return StringValue(ret)
+       return StringValue('-webkit-' + to__s)
     ret.to__webkit = to__webkit
 
     def to__svg():
@@ -2777,6 +2770,12 @@ def _position(*p):
 
 def _opposite_position(*p):
     return __position(True, *p)
+
+def _position_or_angle( p ):
+    if isinstance( p,
+                   NumberValue ):
+        return p
+    return _position( p )
 
 def _grad_point(*p):
     pos = set()
